@@ -23,6 +23,7 @@ public class Robot extends TimedRobot {
   private static final String kCustomAuto = "My Auto";
   private String m_autoSelected;
   private final SendableChooser<String> m_chooser = new SendableChooser<>();
+  private final ADIS16448_IMU _imu = new ADIS16448_IMU();
 
   /**
    * This function is run when the robot is first started up and should be
@@ -33,6 +34,7 @@ public class Robot extends TimedRobot {
     m_chooser.setDefaultOption("Default Auto", kDefaultAuto);
     m_chooser.addOption("My Auto", kCustomAuto);
     SmartDashboard.putData("Auto choices", m_chooser);
+    _imu.calibrate();
   }
 
   /**
@@ -45,6 +47,20 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void robotPeriodic() {
+    SmartDashboard.putNumber("Gyro-X", _imu.getAngleX());
+    SmartDashboard.putNumber("Gyro-Y", _imu.getAngleY());
+    SmartDashboard.putNumber("Gyro-Z", _imu.getAngleZ());
+    
+    SmartDashboard.putNumber("Accel-X", _imu.getAccelX());
+    SmartDashboard.putNumber("Accel-Y", _imu.getAccelY());
+    SmartDashboard.putNumber("Accel-Z", _imu.getAccelZ());
+    
+    SmartDashboard.putNumber("Pitch", _imu.getPitch());
+    SmartDashboard.putNumber("Roll", _imu.getRoll());
+    SmartDashboard.putNumber("Yaw", _imu.getYaw());
+    
+    SmartDashboard.putNumber("Pressure: ", _imu.getBarometricPressure());
+    SmartDashboard.putNumber("Temperature: ", _imu.getTemperature()); 
   }
 
   /**
@@ -86,6 +102,9 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void teleopPeriodic() {
+    System.out.println("angle x: " + _imu.getAngleX());
+    System.out.println("angle y: " + _imu.getAngleY());
+    System.out.println("angle z: " + _imu.getAngleZ());
   }
 
   /**
